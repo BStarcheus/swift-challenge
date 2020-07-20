@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="swift.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Swift Challenge</title>
+  </head>
+<body>
+  <div class="sw-wrapper">
+    <h1>Swift Challenge</h1>
+    <h3>Everything is optional!</h3>
+    <p>
+      Congratulations on finding another Hummus Challenge. 
+      In this challenge, we've hidden the next clue in some randomized data about people and their hummus creations. 
+      A common problem with data, though, is that sometimes people leave things blank! 
+      Even with missing data, we still need to be able to sort it.
+      <br>Sort the data and decode the clue!
+    </p>
+    <p>
+      Below is a sample dataset that has already been sorted.
+      Notice how it is sorted in increasing order by each column. 
+      If two rows have the same value in a column, then they are sorted by the next column.
+      Also notice that in a correct sort for this challenge, nil values are considered the smallest.
+    </p>
+    <p>
+      Finally, to get the clue you'll need to decode each "Rating" integer as its corresponding ASCII character.
+      Once you have the data sorted, the first 18 rows that have non-nil Ratings will be your clue!
+    </p>
+    <button type="button" id="details" class="btn btn-primary" data-toggle="modal" data-target="#detailsModal">
+      Details
+    </button>
+
+    <form id="file_form" action="https://sw-ch-53lcnxjmsa-uc.a.run.app" method="POST" enctype="multipart/form-data">
+      <input type="file" id="swiftFile" name="swiftFile" required>
+      <input type="submit" id="submit" class="btn btn-primary">
+    </form>
+    <div id="resp-box">
+      <p id="resp-message" class="resp-message"><b>Response:</b></p>
+      <p id="resp-clue" class="resp-message"><b>Your Decoding:</b></p>
+    </div>
+
+    <div id="table-wrapper">
+      <table id="arr-data" class="sw-table"></table>
+    </div>
+
+    
+    <div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+      <div id="detail-modal-dialog" class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              To solve this challenge, you must submit a Swift file with a function that sorts the rows of data and decodes the clue.
+              The data is given in the form of a 2D array. 
+              Looking at the sample data, each row of the table corresponds to a single array.
+              Your goal is to sort the arrays, not the data within those arrays.
+            </p>
+            <p>
+              Don't have Swift on your computer? Debug your code on
+              <a href="https://repl.it/languages/swift">REPL.it</a>
+            </p>
+            
+            <h3>Requirements</h3>
+            <ul>
+              <li>
+                Submit a Swift file with a function named “sortAndDecode”
+              </li>
+              <li>
+                <code>func sortAndDecode(_ arr: [[Any?]]) -> (String, [[Any?]])</code>
+              </li>
+              <li>
+                Function Parameter:
+                <ul>
+                  <li>arr: A 2D array of optional values of Any type</li>
+                </ul>
+              </li>
+              <li>
+                Return: A tuple with the following 2 items in the following order
+                <ul>
+                  <li>
+                    String: The Clue, decoded from decimal (integer) ASCII values
+                  </li>
+                  <li>
+                    [[Any?]]: The sorted array of arrays
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <h3>Sorting in Swift</h3>
+            <p>
+              The easiest way to sort in Swift is with the built in sorting functions, either 
+              <a href="https://developer.apple.com/documentation/swift/array/2296801-sort">sort(by: )</a> 
+              or <a href="https://developer.apple.com/documentation/swift/array/2296815-sorted">sorted(by: )</a>.
+              These functions take a function or closure as the argument. 
+              The function you pass in will allow the sorter to decide if one element should go before the other. 
+              If it returns true, the first argument should come before the second. 
+              Consider the basic example of passing in the less than operator, which operates the same way.
+            </p>
+            <p>
+              <code>
+                let arr = [3,2,1]<br>
+                arr.sort(by: <)<br>
+                // arr is now [1,2,3]
+              </code>
+            </p>
+            <p>
+              But we aren't sorting integers, we're sorting arrays of optional "Any" type objects. 
+              You'll need something more complex than <.
+              Read on for more tips.
+            </p>
+        
+            <h3>Swift Optionals</h3>
+            <p>
+              In Swift, <a href="https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html#ID330">optional</a> values can either have a value or be "nil".
+              To use the value in an optional, you should use <a href="https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html#ID333">optional binding</a>.
+            </p>
+            <p>
+              However, our data is in arrays of optional "Any" types, and "Any" objects cannot be compared.
+              Strings and integers are comparable, so we need to convert the object back to its original type. 
+            </p>
+            <p>
+              In your sort function when you compare two rows, you'll have to access the string or integer for comparison.
+              Optional binding and attempting to convert to a type looks like this.
+              <br><code>if let stringVal = optionalAnyVal as? String { // Code }</code>
+            </p>
+            <p>
+              Because Swift is statically typed, you need to know the type at compile time. 
+              For this challenge, as you can see in the sample data, all arrays have 5 string elements and 1 integer element in that order.
+              One possible solution: Anytime you want to compare elements from indices 0-4, you should try to optionally bind to a string. 
+              If you have to compare by the element at index 5, optionally bind to an integer.
+            </p>
+            <p>
+              One final hint. Consider your comparison function passed in to the sort(by: ) function.
+              It takes in two [Any?] arrays. It should compare them "column by column". For one comparison you have 4 cases.
+              <table id="hint-table" class="sw-table">
+                <tr>
+                  <th>item1</th>
+                  <th>item2</th>
+                  <th>Result</th>
+                </tr>
+                <tr>
+                  <td>nil</td>
+                  <td>nil</td>
+                  <td>Compare the next column</td>
+                </tr>
+                <tr>
+                  <td>nil</td>
+                  <td>Not nil</td>
+                  <td>return true</td>
+                </tr>
+                <tr>
+                  <td>Not nil</td>
+                  <td>nil</td>
+                  <td>return false</td>
+                </tr>
+                <tr>
+                  <td>Not nil</td>
+                  <td>Not nil</td>
+                  <td>return valueOfItem1 < valueOfItem2</td>
+                </tr>
+              </table>
+            </p>
+            <p>Good Luck!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </div> 
+</body>
+</html>

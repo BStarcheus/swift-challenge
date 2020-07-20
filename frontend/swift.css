@@ -1,0 +1,55 @@
+.sw-wrapper {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px 10px;
+}
+h1, h3, form {
+    text-align: center;
+}
+
+
+#submit, #details {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+#details {
+    display: block;
+    margin: 0 auto 20px auto;
+}
+#resp-message, #resp-clue {
+    min-height: 20px;
+}
+#resp-box {
+    margin: 10px auto;
+    padding: 5px;
+    border: 1px solid grey;
+}
+
+
+#table-wrapper {
+    overflow-x: scroll;
+}
+.sw-table {
+    margin: 20px auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.sw-table td {
+    border: 1px solid black;
+    background-color: white;
+}
+.sw-table tr {
+    height: 30px;
+}
+.sw-table th, .sw-table td {
+    padding: 0 5px;
+}
+
+#hint-table td {
+    padding: 10px;
+}
+
+
+#detail-modal-dialog {
+    max-width: 700px;
+}
