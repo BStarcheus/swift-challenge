@@ -78,7 +78,7 @@ private func generateRandomArray() -> [[Any?]] {
 	randomArr.sort(by: arrSorter)
 
 	// Insert secret
-	let clue = "Clue:NoClueYetWait"
+	let clue = "Clue:22ce04ccef6f6"
 	var clueIndex = 0
 
 	// Insert each character as it's ASCII value in decimal
@@ -118,7 +118,7 @@ private func checkUserSolution() {
         "decodedClue": decodedClue,
         "userSortedArr": stringOnlyArr
     ]
-    if decodedClue == "Clue:NoClueYetWait" {
+    if decodedClue == "Clue:22ce04ccef6f6" {
         json["message"] = "Congratulations, you decoded the clue!"
     } else {
         json["message"] = "The array isn't quite sorted, but take a look at your decoded clue and the data to see where you may have gone wrong. It should start with 'Clue:'"
