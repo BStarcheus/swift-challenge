@@ -1,8 +1,17 @@
 const form = document.getElementById("file_form");
 form.addEventListener("submit", submitFile);
 
+// Page components
+const respMsg = document.getElementById("resp-message");
+const respClue = document.getElementById("resp-clue");
+const dataArr = document.getElementById("arr-data");
+
+sampleData();
+
 async function submitFile(event) {
     event.preventDefault();
+    respMsg.innerHTML = "<b>Response</b> Loading...";
+    respClue.innerHTML = "<b>Your Decoding:</b>";
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", form.action); 
@@ -17,21 +26,20 @@ async function handleSwiftResp(event) {
         respData = JSON.parse(event.target.response);
     } catch {
         if (event.target.response) {
-            document.getElementById("resp-message").innerHTML = "<b>Response:</b> " + event.target.response;
+            respMsg.innerHTML = "<b>Response:</b> " + event.target.response;
         } else {
-            document.getElementById("resp-message").innerHTML = "<b>Response:</b> Internal error.";
+            respMsg.innerHTML = "<b>Response:</b> Internal error.";
         }
         return;
     }
     
-    document.getElementById("resp-message").innerHTML = "<b>Response:</b> " + respData.message;
-    document.getElementById("resp-clue").innerHTML = "<b>Your Decoding:</b> " + respData.decodedClue;
+    respMsg.innerHTML = "<b>Response:</b> " + respData.message;
+    respClue.innerHTML = "<b>Your Decoding:</b> " + respData.decodedClue;
 
     let userSortedArr = respData.userSortedArr;
     createArray(height = userSortedArr.length, width = userSortedArr[0].length);
     await animateRows(userSortedArr);
 }
-
 
 
 function animateRows(arr) {
@@ -53,16 +61,12 @@ function animateRows(arr) {
 }
 
 
-
-const dataArr = document.getElementById("arr-data");
-
 function createArray(height=50, width=6) {
     dataArr.innerHTML = "<tr><th>Name</th><th>Base</th><th>Add-in</th><th>Add-in</th><th>Add-in</th><th>Rating</th></tr>";
     for (let row = 0; row < height; row++) {
         currentRow = document.createElement('tr');
         currentRow.id = `row${row}`;
         
-
         for (let col = 0; col < width; col++) {
             arrItem = document.createElement('td');
             arrItem.id = `${row},${col}`;
@@ -126,5 +130,3 @@ function sampleData() {
                         <tr id="row48"><td id="48,0">Zack</td><td id="48,1">Plain</td><td id="48,2">Garlic</td><td id="48,3">Roasted Pepper</td><td id="48,4">Roasted Pepper</td><td id="48,5">33</td></tr>
                         <tr id="row49"><td id="49,0">Zack</td><td id="49,1">Roasted Pepper</td><td id="49,2">Jalepeno</td><td id="49,3">Oil</td><td id="49,4">nil</td><td id="49,5">257</td></tr>`;
 }
-
-sampleData();
